@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Please Leave Your Message After the Tone</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -15,16 +15,16 @@
         body, html {
             height: 100%;
             font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
             color: #fff;
             background-color: #000;
+            overscroll-behavior: none; /* Prevent overscroll bounce on mobile */
+            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
         }
 
         .container {
             position: relative;
             width: 100%;
             min-height: 100vh;
-            overflow-y: auto;
             background: transparent;
         }
 
@@ -42,60 +42,6 @@
             max-width: 450px;
             margin: 0 auto;
             z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: radial-gradient(circle, rgba(100, 200, 255, 0.8) 20%, rgba(100, 200, 255, 0.2) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            mix-blend-mode: screen;
-            animation: move infinite linear;
-            z-index: 2;
-        }
-
-        .particle:nth-child(1) { left: 10%; top: 20%; animation-duration: 12s; animation-delay: -1s; animation-name: move-1; }
-        @keyframes move-1 { 0% { transform: translate(0, 0); } 100% { transform: translate(15px, 15px); } }
-        .particle:nth-child(2) { left: 30%; top: 40%; animation-duration: 15s; animation-delay: -2s; animation-name: move-2; }
-        @keyframes move-2 { 0% { transform: translate(0, 0); } 100% { transform: translate(-10px, 20px); } }
-        .particle:nth-child(3) { left: 50%; top: 60%; animation-duration: 10s; animation-delay: -3s; animation-name: move-3; }
-        @keyframes move-3 { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, -10px); } }
-        .particle:nth-child(4) { left: 70%; top: 30%; animation-duration: 14s; animation-delay: -4s; animation-name: move-4; }
-        @keyframes move-4 { 0% { transform: translate(0, 0); } 100% { transform: translate(-15px, 12px); } }
-        .particle:nth-child(5) { left: 20%; top: 80%; animation-duration: 13s; animation-delay: -5s; animation-name: move-5; }
-        @keyframes move-5 { 0% { transform: translate(0, 0); } 100% { transform: translate(18px, -15px); } }
-        .particle:nth-child(6) { left: 40%; top: 10%; animation-duration: 11s; animation-delay: -6s; animation-name: move-6; }
-        @keyframes move-6 { 0% { transform: translate(0, 0); } 100% { transform: translate(-12px, 15px); } }
-        .particle:nth-child(7) { left: 60%; top: 50%; animation-duration: 16s; animation-delay: -7s; animation-name: move-7; }
-        @keyframes move-7 { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, 10px); } }
-        .particle:nth-child(8) { left: 80%; top: 70%; animation-duration: 12s; animation-delay: -8s; animation-name: move-8; }
-        @keyframes move-8 { 0% { transform: translate(0, 0); } 100% { transform: translate(-10px, -20px); } }
-        .particle:nth-child(9) { left: 15%; top: 45%; animation-duration: 14s; animation-delay: -9s; animation-name: move-9; }
-        @keyframes move-9 { 0% { transform: translate(0, 0); } 100% { transform: translate(15px, 12px); } }
-        .particle:nth-child(10) { left: 35%; top: 25%; animation-duration: 13s; animation-delay: -10s; animation-name: move-10; }
-        @keyframes move-10 { 0% { transform: translate(0, 0); } 100% { transform: translate(-12px, 18px); } }
-
-        .particle::before {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(to right, rgba(100, 200, 255, 0), rgba(100, 200, 255, 0.3), rgba(100, 200, 255, 0));
-            transform-origin: 0 0;
-            mix-blend-mode: screen;
-            z-index: 2;
-        }
-
-        .particle:nth-child(1)::before { transform: rotate(45deg); left: 6px; }
-        .particle:nth-child(2)::before { transform: rotate(120deg); left: 8px; }
-        .particle:nth-child(3)::before { transform: rotate(200deg); left: 5px; }
-
-        @keyframes move {
-            0% { opacity: 0.8; }
-            50% { opacity: 0.4; }
-            100% { opacity: 0.8; }
         }
 
         .title-author {
@@ -145,7 +91,7 @@
         }
 
         .line {
-            opacity: 100;
+            opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.7s ease, transform 0.7s ease;
             margin-bottom: 6px;
@@ -176,30 +122,12 @@
             .poem {
                 font-size: 0.8rem;
             }
-            .particle {
-                width: 3px;
-                height: 3px;
-            }
-            .particle::before {
-                width: 30px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="background">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
+        <div class="background"></div>
         <div class="title-author" id="title-author">
             <div class="title">Please Leave Your Message After the Tone</div>
             <div class="author">by Jhonny Lemus</div>
