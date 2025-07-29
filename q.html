@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Please Leave Your Message After the Tone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            background: #000;
+        }
+
+        .parallax {
+            position: relative;
+            min-height: 100vh;
+            background-image: url('https://images.pexels.com/photos/5066936/pexels-photo-5066936.jpeg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            aspect-ratio: 9 / 16;
+            max-width: 450px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.8) 20%, rgba(100, 200, 255, 0.2) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            animation: move infinite linear;
+            z-index: 2;
+        }
+
+        /* 10 particles for better mobile performance */
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-duration: 12s; animation-delay: -1s; animation-name: move-1; }
+        @keyframes move-1 { 0% { transform: translate(0, 0); } 100% { transform: translate(15px, 15px); } }
+        .particle:nth-child(2) { left: 30%; top: 40%; animation-duration: 15s; animation-delay: -2s; animation-name: move-2; }
+        @keyframes move-2 { 0% { transform: translate(0, 0); } 100% { transform: translate(-10px, 20px); } }
+        .particle:nth-child(3) { left: 50%; top: 60%; animation-duration: 10s; animation-delay: -3s; animation-name: move-3; }
+        @keyframes move-3 { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, -10px); } }
+        .particle:nth-child(4) { left: 70%; top: 30%; animation-duration: 14s; animation-delay: -4s; animation-name: move-4; }
+        @keyframes move-4 { 0% { transform: translate(0, 0); } 100% { transform: translate(-15px, 12px); } }
+        .particle:nth-child(5) { left: 20%; top: 80%; animation-duration: 13s; animation-delay: -5s; animation-name: move-5; }
+        @keyframes move-5 { 0% { transform: translate(0, 0); } 100% { transform: translate(18px, -15px); } }
+        .particle:nth-child(6) { left: 40%; top: 10%; animation-duration: 11s; animation-delay: -6s; animation-name: move-6; }
+        @keyframes move-6 { 0% { transform: translate(0, 0); } 100% { transform: translate(-12px, 15px); } }
+        .particle:nth-child(7) { left: 60%; top: 50%; animation-duration: 16s; animation-delay: -7s; animation-name: move-7; }
+        @keyframes move-7 { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, 10px); } }
+        .particle:nth-child(8) { left: 80%; top: 70%; animation-duration: 12s; animation-delay: -8s; animation-name: move-8; }
+        @keyframes move-8 { 0% { transform: translate(0, 0); } 100% { transform: translate(-10px, -20px); } }
+        .particle:nth-child(9) { left: 15%; top: 45%; animation-duration: 14s; animation-delay: -9s; animation-name: move-9; }
+        @keyframes move-9 { 0% { transform: translate(0, 0); } 100% { transform: translate(15px, 12px); } }
+        .particle:nth-child(10) { left: 35%; top: 25%; animation-duration: 13s; animation-delay: -10s; animation-name: move-10; }
+        @keyframes move-10 { 0% { transform: translate(0, 0); } 100% { transform: translate(-12px, 18px); } }
+
+        .particle::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(100, 200, 255, 0), rgba(100, 200, 255, 0.3), rgba(100, 200, 255, 0));
+            transform-origin: 0 0;
+            mix-blend-mode: screen;
+            z-index: 2;
+        }
+
+        .particle:nth-child(1)::before { transform: rotate(45deg); left: 6px; }
+        .particle:nth-child(2)::before { transform: rotate(120deg); left: 8px; }
+        .particle:nth-child(3)::before { transform: rotate(200deg); left: 5px; }
+
+        @keyframes move {
+            0% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+
+        .title-author {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 1;
+            transition: opacity 1s ease;
+            width: 90%;
+            z-index: 3;
+        }
+
+        .title-author.hidden {
+            opacity: 0;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .author {
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-weight: 300;
+        }
+
+        .poem {
+            position: relative;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            max-width: 90%;
+            margin: 0 auto;
+            margin-top: 100vh;
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .line {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            margin-bottom: 6px;
+        }
+
+        .line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media screen and (max-width: 450px) {
+            .parallax {
+                background-attachment: scroll;
+                width: 100%;
+                height: 100vh;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            .author {
+                font-size: 1rem;
+            }
+            .poem {
+                font-size: 0.8rem;
+                padding: 15px;
+            }
+            .particle {
+                width: 3px;
+                height: 3px;
+            }
+            .particle::before {
+                width: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="parallax">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="title-author" id="title-author">
+                <div class="title">Please Leave Your Message After the Tone</div>
+                <div class="author">by Jhonny Lemus</div>
+            </div>
+            <div class="poem" id="poem">
+                <div class="line">Dear Love</div>
+                <div class="line">Where do I begin</div>
+                <div class="line">Writing this poem to you</div>
+                <div class="line">Attempting to save</div>
+                <div class="line">What I've become a slave to</div>
+                <div class="line">Something long gone</div>
+                <div class="line">But so close to my heart</div>
+                <div class="line">A big bang, a broken union</div>
+                <div class="line">So far, so close, so gone</div>
+                <div class="line">And it struck me, as it strikes me every time</div>
+                <div class="line">To call you, to call for you</div>
+                <div class="line">When I was there a'pondering</div>
+                <div class="line">An epiphany when I didn't need one</div>
+                <div class="line">And to whom do I owe the pleasure to?</div>
+                <div class="line">Because my body can't handle the truth</div>
+                <div class="line">Payphone,</div>
+                <div class="line">You're all alone</div>
+                <div class="line">I'm sorry</div>
+                <div class="line">I don't have the spare change to run through your area codes</div>
+                <div class="line">To call and hear her voice</div>
+                <div class="line">When all I hear are the ghosts of an empty wood</div>
+                <div class="line">Stranded I've become</div>
+                <div class="line">In crowds so full of empty people</div>
+                <div class="line">Wondering if I'm ready to meet you</div>
+                <div class="line">I have found this place they only write about in my fiction books</div>
+                <div class="line">Where digits run away from this phone in endless patterns</div>
+                <div class="line">Like a stream along a river</div>
+                <div class="line">I'm just drifting by</div>
+                <div class="line">With my back against the water</div>
+                <div class="line">My head to the sky.</div>
+                <div class="line">And…</div>
+                <div class="line">how beautiful the goodbyes</div>
+                <div class="line">When neither of us could hang up</div>
+                <div class="line">I guess that's why I'm always leaving you a message</div>
+                <div class="line">and you never pick up</div>
+                <div class="line">Her eyes haunt my thoughts in the day</div>
+                <div class="line">Leaving my mind to wander alone</div>
+                <div class="line">In this dark place</div>
+                <div class="line">My mind dismantled by a perpetual crisis</div>
+                <div class="line">Driven to a sickly madness that smells of nostalgia</div>
+                <div class="line">A theatrical drama is what im dialing for</div>
+                <div class="line">It's what I'm going to die for</div>
+                <div class="line">A Fantasia Number 1, two eyes one gun</div>
+                <div class="line">She glides above the digits</div>
+                <div class="line">Like a reaper that's not a cropper</div>
+                <div class="line">Moving away from the cellular walls</div>
+                <div class="line">Through the speakers of the caller.</div>
+                <div class="line">My restless dream</div>
+                <div class="line">Like my "Silent Hill"</div>
+                <div class="line">I cannot escape this hyperplane</div>
+                <div class="line">Between us…</div>
+                <div class="line">Because maybe I like to suffer and its over</div>
+                <div class="line">When I'm thinking of us…</div>
+                <div class="line">Us….</div>
+                <div class="line">It's like a movie when she turns around to face me</div>
+                <div class="line">Black hair, black eyes</div>
+                <div class="line">Hair flying in the wind like a free and radiant light</div>
+                <div class="line">I'm supposed to smile like everything is okay</div>
+                <div class="line">That's the part I play when I'm on screen</div>
+                <div class="line">Where behind the call-curtain</div>
+                <div class="line">I'm going to cry and call myself a man</div>
+                <div class="line">When I never had a plan to handle way the numbers fly through my brain</div>
+                <div class="line">I'm going insane because I don't sleep</div>
+                <div class="line">When it's always just a dream</div>
+                <div class="line">A restless thing that keeps me up</div>
+                <div class="line">On nights which never end</div>
+                <div class="line">A perpetual love that never sleeps</div>
+                <div class="line">A smile that runs cheek to cheek</div>
+                <div class="line">In cheap photos I can't break apart</div>
+                <div class="line">I pore over all the details of our bond</div>
+                <div class="line">As tears pour down onto photopaper</div>
+                <div class="line">In love notes that wrenches my heart</div>
+                <div class="line">The feeling in my gut that calls me to call you</div>
+                <div class="line">Like Eyre to Rochester.</div>
+                <div class="line">How foretelling when we spoke of Gatsby</div>
+                <div class="line">And now all I think about is her.</div>
+                <div class="line">As stars were being sprinkled from her hands</div>
+                <div class="line">To speckle this space</div>
+                <div class="line">As the swans bow their heads in unison</div>
+                <div class="line">To acknowledge her grace</div>
+                <div class="line">And even when the water calms to take a listen</div>
+                <div class="line">To the way her body sways in smooth motion</div>
+                <div class="line">Like a ballet dancer on leaping through air</div>
+                <div class="line">Like a violin bow to violin</div>
+                <div class="line">Remind me of hidden dances</div>
+                <div class="line">We shared in gardens, rooms and rain</div>
+                <div class="line">And in elevators that took us so high</div>
+                <div class="line">Our hands a single of immovable</div>
+                <div class="line">We thought we'd never stop…</div>
+                <div class="line">But somehow we did…</div>
+                <div class="line">Payphone</div>
+                <div class="line">I'm sending this message at the tone</div>
+                <div class="line">Because I'm more confused than truly gone</div>
+                <div class="line">Beating myself as I rip the pages of these yellow magazines</div>
+                <div class="line">Sticking together the way things used to be</div>
+                <div class="line">But I can't find the right way to put together</div>
+                <div class="line">The cipher that spells out her name</div>
+                <div class="line">Nothing works, and I'm running out of time</div>
+                <div class="line">But it will never be the same</div>
+                <div class="line">I wrote to you in fountain pen</div>
+                <div class="line">I never had the chance to place it in your hands</div>
+                <div class="line">To displace stardust between the letters</div>
+                <div class="line">Where swans swim by</div>
+                <div class="line">Atop white letterpaper</div>
+                <div class="line">To the ends of worn out sweaters</div>
+                <div class="line">To deliver what I cannot say</div>
+                <div class="line">As I drown in black ink, trying to find an escape</div>
+                <div class="line">So I must fly away on a paper plane</div>
+                <div class="line">Built from things I don't know how to say</div>
+                <div class="line">Ripping myself apart as I rip apart the pages</div>
+                <div class="line">Of the things you never knew.</div>
+                <div class="line">I cannot rearrange the characters of this play</div>
+                <div class="line">That won't stop playing the same plot I cannot change</div>
+                <div class="line">I'm losing control of the stage</div>
+                <div class="line">As it disintegrates into madness</div>
+                <div class="line">I descent into darkness</div>
+                <div class="line">That's really just a mask for a suffocating sadness</div>
+                <div class="line">As I float on ink that was once</div>
+                <div class="line">The blood of my veins</div>
+                <div class="line">When you are the sole occupation</div>
+                <div class="line">Of my thoughts</div>
+                <div class="line">Where I'm not safe</div>
+                <div class="line">But I'm not yet dead…</div>
+                <div class="line">Why…</div>
+                <div class="line">Why…(I whisper to the ink that has consumed me)</div>
+                <div class="line">Her eyes glow and glow in this place between life and death they only speak about</div>
+                <div class="line">In my "fiction" books</div>
+                <div class="line">Watching me, but somehow she finally came…</div>
+                <div class="line">Soft…</div>
+                <div class="line">Soft are her eyes</div>
+                <div class="line">Because they represent how they touched my soul</div>
+                <div class="line">And between the pages she's so…</div>
+                <div class="line">Real…</div>
+                <div class="line">And Alive…</div>
+                <div class="line">Reaching for my fingertips through the guise</div>
+                <div class="line">Of my meaningless words</div>
+                <div class="line">That can't cross worlds but I try so hard to find the way</div>
+                <div class="line">The way to what?</div>
+                <div class="line">But…</div>
+                <div class="line">through the pages she touches my soul</div>
+                <div class="line">Her touch surpasses the imperfect skin</div>
+                <div class="line">That soothe the tensest fibers of my body</div>
+                <div class="line">Correcting the imperfections</div>
+                <div class="line">Entering every intersection of my whole being.</div>
+                <div class="line">She unravels me through the far stretches</div>
+                <div class="line">Of rushed penstrokes</div>
+                <div class="line">Asking me me more than questions</div>
+                <div class="line">Is she watching me from afar</div>
+                <div class="line">Like a lighthouse daydreaming</div>
+                <div class="line">As it watches stones sink from its cliffs</div>
+                <div class="line">Watching ships sink from her Earth</div>
+                <div class="line">Besting my nature and</div>
+                <div class="line">Capsizing all of existence?</div>
+                <div class="line">She could stop time itself</div>
+                <div class="line">In what she could make a single kiss</div>
+                <div class="line">With those lovely eyes,</div>
+                <div class="line">There she stays and watches</div>
+                <div class="line">As my lips quiver before tears</div>
+                <div class="line">Because I'm just imagining this</div>
+                <div class="line">And im holding it all in</div>
+                <div class="line">Trying to steer the uncharted course</div>
+                <div class="line">But it's just too much.</div>
+                <div class="line">The tension of broken cords</div>
+                <div class="line">Held on for so long just to snap</div>
+                <div class="line">Anchoring me to bottomless fantasies</div>
+                <div class="line">And to lost connections</div>
+                <div class="line">Somewhere halfway through</div>
+                <div class="line">Your voice vanished to the swans</div>
+                <div class="line">So I missed your laughter</div>
+                <div class="line">And instead of being grateful</div>
+                <div class="line">It just echoes in this empty space</div>
+                <div class="line">As a sweet giggle I cannot cherish anymore.</div>
+                <div class="line">Somehow I have become the house and the walls</div>
+                <div class="line">Trapping the bounds of my closure,</div>
+                <div class="line">And the closure of our relationship.</div>
+                <div class="line">So my shadow meets my spirit like an old friend</div>
+                <div class="line">And tells me its over</div>
+                <div class="line">Because it becomes ever the more painful</div>
+                <div class="line">Each time I hear it</div>
+                <div class="line">Love you can't explain to me</div>
+                <div class="line">Why I'm sitting in my car</div>
+                <div class="line">With a gun in my hand</div>
+                <div class="line">And your voice from afar</div>
+                <div class="line">Before I start the new Big Bang</div>
+                <div class="line">Watching the moon and sun cycle like a washing machine</div>
+                <div class="line">To clean out the good and the bad</div>
+                <div class="line">Like a slow working disease</div>
+                <div class="line">Because I'm suffering a moral dilemma.</div>
+                <div class="line">You come and then you go</div>
+                <div class="line">Just like the swans that stare at me</div>
+                <div class="line">With their daring purity</div>
+                <div class="line">Judging me with their unquestionable clarity</div>
+                <div class="line">Asking me to stop watching those</div>
+                <div class="line">Starry skies, those starry eyes of your ghost</div>
+                <div class="line">Your phantom, calling a home</div>
+                <div class="line">In my vessel, my heart</div>
+                <div class="line">And what did you expect me to do</div>
+                <div class="line">To carry you on my shoulders</div>
+                <div class="line">As my life passes? As I get older?</div>
+                <div class="line">When I'm living on the edge? The edge of my</div>
+                <div class="line">desk?</div>
+                <div class="line">When you've assigned me this task</div>
+                <div class="line">To make sense of nonsense?</div>
+                <div class="line">And it kills me that I can't?</div>
+                <div class="line">You're trying to call home, when I want you to leave</div>
+                <div class="line">Because I am the walls too</div>
+                <div class="line">And what is the thing your trying to show me</div>
+                <div class="line">What is this pain you paid in full</div>
+                <div class="line">When I cannot spare another memory</div>
+                <div class="line">Of you, for you?</div>
+                <div class="line">But I'm alone wondering what I am</div>
+                <div class="line">Laying in the gaze of what would be my demise</div>
+                <div class="line">Where I shutter at the beautiful song</div>
+                <div class="line">That are the irises of her eyes</div>
+                <div class="line">That explode with glittered firework</div>
+                <div class="line">Laying in the comfort and vulnerability</div>
+                <div class="line">Of a love now lost</div>
+                <div class="line">And now you want me to see her</div>
+                <div class="line">When she's all I see already (it's the dream)</div>
+                <div class="line">Now I break away from invisible hands</div>
+                <div class="line">That have tethered my blood to the car crash about to happen</div>
+                <div class="line">Because I too became invisible</div>
+                <div class="line">In a land which doesn't exist to man</div>
+                <div class="line">In a state you managed to fund me in</div>
+                <div class="line">Where bullets change men but can't kill them.</div>
+                <div class="line">BANG,</div>
+                <div class="line">CRASH.</div>
+                <div class="line">My greatest fear is to fail you</div>
+                <div class="line">And my greatest failure is my fear of such</div>
+                <div class="line">Now your hands have left the wheel</div>
+                <div class="line">Leaving me to burn in the ship</div>
+                <div class="line">That had already sunk</div>
+                <div class="line">A grand man-of-war</div>
+                <div class="line">That's sailed across the divine thunderstorm</div>
+                <div class="line">To carry the bad in me to a sea of ink</div>
+                <div class="line">And lift the good in me to life</div>
+                <div class="line">Because I've been saying goodbye to myself too many times</div>
+                <div class="line">Because my anger feeds a hopeless rage</div>
+                <div class="line">That tries to drive me insane</div>
+                <div class="line">My blood, boiling, as your lips</div>
+                <div class="line">Slip the words that aren't lies</div>
+                <div class="line">But avoid the truth</div>
+                <div class="line">So I punch the concrete walls around me</div>
+                <div class="line">That aren't meant to break</div>
+                <div class="line">Only there to take it in because I can't</div>
+                <div class="line">Only there to take it and keep it in</div>
+                <div class="line">Because that's all they can do</div>
+                <div class="line">And that hurts me most</div>
+                <div class="line">More than I ever knew</div>
+                <div class="line">But now I understand</div>
+                <div class="line">Because the swans explained it to me</div>
+                <div class="line">They helped put old me to rest</div>
+                <div class="line">So I ask how many times did we play like children</div>
+                <div class="line">To suffer as adults?</div>
+                <div class="line">The flavors of the world so bland</div>
+                <div class="line">When the colors of your companionship are now gone</div>
+                <div class="line">And the distance has only grown a new pain</div>
+                <div class="line">Of regret and wishful thinking</div>
+                <div class="line">Because your being is somehow there in the life I breath in</div>
+                <div class="line">Haunting me like a vampires ghoul</div>
+                <div class="line">Staring into my eyes around every streetcorner</div>
+                <div class="line">Haunting me in your phantom clothes and</div>
+                <div class="line">Dressed up as the things that have remained the dream</div>
+                <div class="line">Formless and yet so invigorating</div>
+                <div class="line">Haunting my memories</div>
+                <div class="line">Because everything speaks your name</div>
+                <div class="line">But could I ever give up…</div>
+                <div class="line">Like some apocalypse</div>
+                <div class="line">It has left this nameless void in me</div>
+                <div class="line">And I wonder everyday if you feel the same</div>
+                <div class="line">I wonder because I have one life to live</div>
+                <div class="line">And I've grown attached to you beyond understanding</div>
+                <div class="line">And maybe it's something I used to write poems about</div>
+                <div class="line">About this thing called love</div>
+                <div class="line">And maybe I never really understood it until now</div>
+                <div class="line">But I'm leaving you a message now</div>
+                <div class="line">As sweet as strawberries come</div>
+                <div class="line">Only the ones you gave me were the sweetest</div>
+                <div class="line">Sometimes I'd wait and write a poem</div>
+                <div class="line">At your special place, waiting to read them to you because maybe you'd show up again</div>
+                <div class="line">Hoping you'd come randomly but you never did</div>
+                <div class="line">And every night I'd watch from those hidden rooftops</div>
+                <div class="line">Above the hush of those sleeping streets</div>
+                <div class="line">Where the streetlamps separate me from the living</div>
+                <div class="line">And only I could see your large resting eyes on the skyline</div>
+                <div class="line">The buildings caught into your dark silhouette</div>
+                <div class="line">The beauty of night coalesced into you</div>
+                <div class="line">Your eyes folding like sparkling stars coming out of rotation</div>
+                <div class="line">As they blink like a widows web</div>
+                <div class="line">So I could read my poems to you</div>
+                <div class="line">Im heartfelt ovation</div>
+                <div class="line">Capturing all of the city's nightlife</div>
+                <div class="line">In a pair of dark blinking jewels</div>
+                <div class="line">It was always when you'd close those eyes</div>
+                <div class="line">To fall asleep</div>
+                <div class="line">I would come back to life</div>
+                <div class="line">Because then…</div>
+                <div class="line">I became a whisper,</div>
+                <div class="line">threaded through the embers of your dreams</div>
+                <div class="line">Your ghost comes as innocent swans to</div>
+                <div class="line">Guide me through depthless oceans</div>
+                <div class="line">As meanings in dreams</div>
+                <div class="line">Maybe mid-day laughter is where it began</div>
+                <div class="line">Which led to a forehead kiss we both can't forget</div>
+                <div class="line">An artifact that binded us forever</div>
+                <div class="line">And maybe between the half truths and half lies</div>
+                <div class="line">We missed the mark because we lived what felt like a lifetime of romance</div>
+                <div class="line">But in all of the chaos I choose you</div>
+                <div class="line">And I never want to look back</div>
+                <div class="line">I choose you in these lonely hours</div>
+                <div class="line">Where the dream lives forever</div>
+                <div class="line">Where I've heard myself cry like a child.</div>
+                <div class="line">But I stand where you left</div>
+                <div class="line">And if you can meet me there</div>
+                <div class="line">Where we once went our separate ways</div>
+                <div class="line">We can still fix what we began</div>
+                <div class="line">As we throw doves to lofty winds</div>
+                <div class="line">The swans told me it must be this way…</div>
+                <div class="line">And no other words can describe it as so -</div>
+                <div class="line">The restless dreams which haunt me still.</div>
+                <div class="line">But you never pick up</div>
+                <div class="line">You never will…</div>
+                <div class="line">The pianos are against the jaded walls</div>
+                <div class="line">Waiting and waiting to be played,</div>
+                <div class="line">Waiting for life to hit them because they don't know how beautiful they sound</div>
+                <div class="line">When someone alone comes to meet them</div>
+                <div class="line">And play the most beautiful sounds to grow the fractured fields of hope</div>
+                <div class="line">And so I keep her song rested onto my conscience</div>
+                <div class="line">Like the cold pedals rested softly beneath my feet</div>
+                <div class="line">And with her I…</div>
+                <div class="line">Gently play</div>
+                <div class="line">Dancing with her into the space</div>
+                <div class="line">Where we meet like two swans</div>
+                <div class="line">In a sea of ink</div>
+                <div class="line">Someday in some place I know about</div>
+                <div class="line">Something I write poems about</div>
+                <div class="line">I stare into her eyes that haunt me in the day</div>
+                <div class="line">Because the message is clear</div>
+                <div class="line">I understood that I cannot "understand"</div>
+                <div class="line">Because her eyes are dark and whole</div>
+                <div class="line">Where I am dark and empty…</div>
+                <div class="line">May I make peace</div>
+                <div class="line">With the world I cannot control</div>
+                <div class="line">May I unfold like petals to a flower</div>
+                <div class="line">Like a swan to swim alone</div>
+                <div class="line">To reach this new place</div>
+                <div class="line">Where I have never been</div>
+                <div class="line">What I call home</div>
+                <div class="line">Her eyes are whole,</div>
+                <div class="line">And of "it" all</div>
+                <div class="line">Of all things I have begun to see.</div>
+                <div class="line">Where I am dark and empty</div>
+                <div class="line">Is a new man happy</div>
+                <div class="line">That's born</div>
+                <div class="line">To be.</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleAuthor = document.getElementById('title-author');
+            const lines = document.querySelectorAll('.line');
+
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.classList.add('visible');
+                }, index * 200);
+            });
+
+            document.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                if (scrollPosition > 50) {
+                    titleAuthor.classList.add('hidden');
+                } else {
+                    titleAuthor.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
