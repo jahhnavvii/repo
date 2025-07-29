@@ -17,6 +17,7 @@
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             color: #fff;
+            background-color: #000;
         }
 
         .container {
@@ -129,16 +130,18 @@
         .poem-container {
             position: relative;
             min-height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.85);
             max-width: 90%;
             margin: 100vh auto 20px;
-            padding: 20px;
+            padding: 40px 20px;
             z-index: 3;
+            border-radius: 10px;
         }
 
         .poem {
             font-size: 0.9rem;
             line-height: 1.8;
+            color: #fff;
         }
 
         .line {
@@ -166,7 +169,8 @@
             }
             .poem-container {
                 font-size: 0.8rem;
-                padding: 15px;
+                padding: 30px 15px;
+                max-width: 95%;
             }
             .poem {
                 font-size: 0.8rem;
@@ -589,6 +593,7 @@
                 checkLinesVisibility();
             });
 
+            // Initial check in case some lines are already visible
             checkLinesVisibility();
         });
     </script>
